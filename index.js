@@ -1,7 +1,7 @@
 import fs from 'fs';
 
 //const data = fs.readFileSync('input.txt', 'UTF-8');
-const data = fs.readFileSync('test.txt', 'UTF-8')
+const data = fs.readFileSync('input.txt', 'UTF-8')
 const lines = data.split(/\r?\n/);
 
 const ASCII_A = 65;
@@ -9,7 +9,9 @@ const MAX_HEIGHT = 9;
 
 // Indicate that the tree has already been seen but code the height
 const convertToCodeLetter = (height) => String.fromCharCode(height + ASCII_A);
-const convertFromCodeLetter = (codeLetter) => codeLetter.charCodeAt(0) - ASCII_A;
+const convertFromCodeLetter = (codeLetter) => {
+    return codeLetter.charCodeAt(0) - ASCII_A
+};
 const isLetter = (input) => /[A-Z]/.test(input);
 
 const convertedData = lines.map(l => [...l]);
@@ -20,13 +22,16 @@ const getFromLeftEdge = (inputRow) => {
     let maxHeight = -1;
     for (let column = 0; column < inputRow.length; column++) {
         if (isLetter(inputRow[column])) {
-            maxHeight = convertFromCodeLetter(inputRow[column])
+            const letterHeight = convertFromCodeLetter(inputRow[column]);
+            if (letterHeight > maxHeight) {
+                maxHeight = letterHeight;
+            }
         }
         else if (inputRow[column] > maxHeight) {
             count++;
             maxHeight = parseInt(inputRow[column]);
             inputRow[column] = convertToCodeLetter(maxHeight);
-        } else {
+        } else if (maxHeight === MAX_HEIGHT) {
             return count;
         }
     }
@@ -38,13 +43,16 @@ const getFromRightEdge = (inputRow) => {
     let maxHeight = -1;
     for (let column = inputRow.length - 1; column >= 0; column--) {
         if (isLetter(inputRow[column])) {
-            maxHeight = parseInt(convertFromCodeLetter(inputRow[column]));
+            const letterHeight = convertFromCodeLetter(inputRow[column]);
+            if (letterHeight > maxHeight) {
+                maxHeight = letterHeight;
+            }
         }
         else if (inputRow[column] > maxHeight) {
             count++;
             maxHeight = parseInt(inputRow[column]);
             inputRow[column] = convertToCodeLetter(maxHeight);
-        } else {
+        } else if (maxHeight === MAX_HEIGHT) {
             return count;
         }
     }
@@ -56,13 +64,16 @@ const getFromTopEdge = (arr, columnIndex) => {
     let maxHeight = -1;
     for (let row = 0; row < arr[0].length; row++) {
         if (isLetter(arr[row][columnIndex])) {
-            maxHeight = convertFromCodeLetter(arr[row][columnIndex])
+            const letterHeight = convertFromCodeLetter(arr[row][columnIndex]);
+            if (letterHeight > maxHeight) {
+                maxHeight = letterHeight;
+            }
         }
         else if (arr[row][columnIndex] > maxHeight) {
             count++;
             maxHeight = parseInt(arr[row][columnIndex]);
             arr[row][columnIndex] = convertToCodeLetter(maxHeight);
-        } else {
+        } else if (maxHeight === MAX_HEIGHT) {
             return count;
         }
     }
@@ -74,13 +85,16 @@ const getFromBottomEdge = (arr, columnIndex) => {
     let maxHeight = -1;
     for (let row = arr[0].length - 1; row >= 0; row--) {
         if (isLetter(arr[row][columnIndex])) {
-            maxHeight = convertFromCodeLetter(arr[row][columnIndex])
+            const letterHeight = convertFromCodeLetter(arr[row][columnIndex]);
+            if (letterHeight > maxHeight) {
+                maxHeight = letterHeight;
+            }
         }
         else if (arr[row][columnIndex] > maxHeight) {
             count++;
             maxHeight = parseInt(arr[row][columnIndex]);
             arr[row][columnIndex] = convertToCodeLetter(maxHeight);
-        } else {
+        } else if (maxHeight === MAX_HEIGHT) {
             return count;
         }
     }
